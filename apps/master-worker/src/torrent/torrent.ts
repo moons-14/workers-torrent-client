@@ -6,10 +6,12 @@ import { restrictTrackerProtocol } from "../utils/restrictTrackerProtocol";
 import { getPeers } from "./getPeers";
 import { parseTorrentFile, TorrentFile } from "./parseTorrentFile";
 import { getMyIp } from "../utils/getMyIp";
+import { connectPeer } from "./connectPeer";
 
 export const torrentFromFile = async (_torrent: any, c: Context) => {
     let torrent: TorrentFile;
     try {
+        // parse and check the torrent file
         torrent = await parseTorrentFile(_torrent);
     } catch (e) {
         console.error(e);
@@ -31,6 +33,8 @@ export const torrentFromFile = async (_torrent: any, c: Context) => {
 
     console.log('my peerId:', peerId, "peer count:", peers.length);
 
-    // parse and check the torrent file
+    console.log("Connecting to peer:", peers[0].ip, peers[0].port);
+    await connectPeer(peers[0].ip, peers[0].port, torrent.infoHash, peerId, c);
+
     return c.json(peers);
 }

@@ -4,7 +4,6 @@ import zod from 'zod';
 export const TorrentFileSchema = zod.object({
     name: zod.string(),
     infoHash: zod.string(),
-    infoHashBuffer: zod.any(),
     announce: zod.array(zod.string()),
     files: zod.array(zod.object({ path: zod.string(), name: zod.string(), length: zod.number(), offset: zod.number() })),
     length: zod.number(),
